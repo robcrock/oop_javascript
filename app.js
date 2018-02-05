@@ -1,8 +1,24 @@
+// Person constructor
 function Person(firstName, lastName, dob) {
   this.firstName = firstName;
   this.lastName = lastName;
   this.birthday = new Date(dob);
 }
+
+// Customer constructor
+function Customer(firstName, lastName, phone, membership) {
+  // call the constructor you'll inherit from
+  Person.call(this, firstName, lastName)
+
+  this.phone = phone;
+  this.membership = membership;
+}
+
+// Inherit from the Person
+Customer.prototype = Object.create(Person.prototype);
+
+// Make Customer prototype return customer
+Customer.prototype.constructor = Customer;
 
 // Calculate age
 Person.prototype.calculateAge = function () {
@@ -21,11 +37,18 @@ Person.prototype.getsMarried = function (newLastName) {
   this.lastName = newLastName;
 };
 
+// Genertic personal greeting
+Person.prototype.greeting = function() {
+  return `Hello ${this.getFullName()}!`;
+}
+
+// Custom customer greeting
+Customer.prototype.greeting = function () {
+  return `Hello ${this.getFullName()}. Welcome to our store!`;
+}
+
 const john = new Person('John', 'Doe', '05-11-1989');
-const mary = new Person('Mary', 'Johnson', 'March 20 1978');
 
-console.log(mary.getFullName());
+const lisa = new Customer('Lisa', 'Duo', '+6143572633', 'Premium');
 
-mary.getsMarried('Smith');
-
-console.log(mary.getFullName());
+console.log(lisa.greeting());
